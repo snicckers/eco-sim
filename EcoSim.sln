@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcoSim", "EcoSim.csproj", "{A014B123-20AB-4401-91DB-BDC75C34108F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{143AD894-1172-4C5A-A5A8-32658F1ADA0F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A014B123-20AB-4401-91DB-BDC75C34108F}.Debug|x86.ActiveCfg = Debug|x86
+		{A014B123-20AB-4401-91DB-BDC75C34108F}.Debug|x86.Build.0 = Debug|x86
+		{A014B123-20AB-4401-91DB-BDC75C34108F}.Release|x86.ActiveCfg = Release|x86
+		{A014B123-20AB-4401-91DB-BDC75C34108F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C493F58-2EB1-4269-A9EB-0B563D653201}
+	EndGlobalSection
+EndGlobal
