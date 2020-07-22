@@ -25,7 +25,7 @@ namespace EcoSim.Source.Simulation
         private Vector2 _position, _dimensions;
         private Color _color;
         private Texture2D _texture;
-        private BasicEntity _nearestTarget;
+        private BasicEntity _nearestTarget; 
         private bool _drawingLine;
         private float _sightRange;
         private float _scanTimer;
@@ -44,7 +44,7 @@ namespace EcoSim.Source.Simulation
             _texture = Globals._content.Load<Texture2D>(Path);
             _color = Globals._colorB;
             _dimensions = new Vector2(12, 12);
-            _sightRange = 50.0f;
+            _sightRange = 25.0f;
             _velocity = 2.0f;
         }
 
