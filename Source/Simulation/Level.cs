@@ -1,19 +1,8 @@
 ﻿#region Includes
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using EcoSim.Source.Engine;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using EcoSim.Source.Simulation;
-using EcoSim.Source.Engine;
 #endregion
 
 namespace EcoSim.Source.Simulation
@@ -31,12 +20,14 @@ namespace EcoSim.Source.Simulation
         {
             _cursor = new Cursor("Primitives\\Square");
             Globals._mouse = new MouseControl();
-            
+
             _mediator = new EntityMediator();
             _factory = new EntityFactory();
 
             _mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, new Vector2(200.0f, 200.0f)));
             _mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, new Vector2(200.0f, 250.0f)));
+
+            
         }
 
         /*------------------- UPDATE -----------------------------------------------*/
@@ -48,13 +39,12 @@ namespace EcoSim.Source.Simulation
             MouseState mouseState = Mouse.GetState();
             Globals._mouse.Update();
 
-            if ((mouseState.LeftButton == ButtonState.Pressed) && (Keyboard.GetState().IsKeyDown(Keys.E)))
+            if ((mouseState.LeftButton == ButtonState.Pressed) && (Keyboard.GetState().IsKeyDown(Keys.F)))
             {
                 Vector2 InitialPosition = new Vector2(_cursor.Position.X, _cursor.Position.Y);
                 _mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, InitialPosition));
             }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            if (Keyboard.GetState().IsKeyDown(Keys.X))
             {
                 _mediator.RemoveAll();
             }
@@ -65,14 +55,15 @@ namespace EcoSim.Source.Simulation
 
             //--- End Input During Update
             Globals._mouse.UpdateOld();
-        }   
+            
+        }
 
         /*------------------- DRAW -------------------------------------------------*/
         public virtual void Draw()
         {
             // Draw Order: Last item is drawn on top. 
             _mediator.Draw();
-            _cursor.Draw(); 
+            _cursor.Draw();
         }
 
         /*------------------- METHODS ----------------------------------------------*/

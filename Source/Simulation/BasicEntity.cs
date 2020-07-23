@@ -42,9 +42,9 @@ namespace EcoSim.Source.Simulation
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
-            _color = Globals._colorB;
+            _color = Globals._colorC;
             _dimensions = new Vector2(12, 12);
-            _sightRange = 25.0f;
+            _sightRange = 50.0f;
             _velocity = 2.0f;
         }
 
@@ -77,10 +77,10 @@ namespace EcoSim.Source.Simulation
                     // Draw a line to the nearest target if it is not null:
                     Vector2 Point_A = this.Position;
                     Vector2 Point_B = this._nearestTarget.Position;
-                    Globals.DrawLine(Globals._spriteBatch, Point_A, Point_B, Globals._colorD, _texture);
+                    Globals.DrawLine(Globals._spriteBatch, Point_A, Point_B, Globals._colorE, _texture);
 
                     // Change entity color if running away
-                    _color = Globals._colorC;
+                    _color = Globals._colorD;
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace EcoSim.Source.Simulation
             else
             {
                 _drawingLine = false;
-                _color = Globals._colorB;
+                _color = Globals._colorC;
             }
 
             // Draw Self:
@@ -125,6 +125,10 @@ namespace EcoSim.Source.Simulation
                 _position -= Direction * _velocity;
             }
         }
+
+        
+
+
 
     }
 }

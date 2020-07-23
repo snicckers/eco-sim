@@ -35,7 +35,9 @@ namespace EcoSim
             _graphics.PreferredBackBufferHeight = Globals._screenHeight;
             _graphics.ApplyChanges();
 
-            
+            //Globals.Camera2D.ViewportHeight = _graphics.GraphicsDevice.Viewport.Height;
+            //Globals.Camera2D.ViewportWidth = _graphics.GraphicsDevice.Viewport.Width;
+
             base.Initialize();
         }
 
@@ -70,6 +72,7 @@ namespace EcoSim
 
            
             _world.Update(gameTime);
+            
 
             base.Update(gameTime);
         }
@@ -80,8 +83,9 @@ namespace EcoSim
         {
             GraphicsDevice.Clear(Globals._colorA);
 
-            Globals._spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-           
+            Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            //Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, Globals.Camera2D.TranslationMatrix);
+
             _world.Draw();
 
             Globals._spriteBatch.End();

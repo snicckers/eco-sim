@@ -50,7 +50,6 @@ namespace EcoSim.Source.Engine
 
                 Globals._spriteBatch.Draw(_texture, rec, null, _color, 0.0f, center, new SpriteEffects(), 0);
             }
-
         }
 
         private void MouseEffects()

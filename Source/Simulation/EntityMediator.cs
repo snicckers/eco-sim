@@ -24,7 +24,7 @@ namespace EcoSim.Source.Simulation
         // Consider using a dictionary?
         private List<BasicEntity> _entities = new List<BasicEntity>();
 
-        
+
         /* Constructors */
         public EntityMediator()
         {
@@ -61,7 +61,7 @@ namespace EcoSim.Source.Simulation
 
         public void RemoveEntity(BasicEntity Entity)
         {
-            
+            _entities.Remove(Entity);
         }
 
         public void RemoveAll()

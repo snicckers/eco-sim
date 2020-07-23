@@ -31,7 +31,9 @@ namespace EcoSim
         public static MouseControl _mouse;
 
         // Camera:
-        public static int _mapHeight, _mapWidth;
+        public static int _mapHeight = 5000;
+        public static int _mapWidth = 3000;
+        
 
 
         // Colors: (make this its own class)
@@ -40,7 +42,6 @@ namespace EcoSim
         public static Color _colorC = new Color(170, 119, 153);
         public static Color _colorD = new Color(221, 153, 153);
         public static Color _colorE = new Color(255, 221, 153);
-
 
         /*------------------- METHODS ----------------------------------------------*/
         // Return Distance (Between 2 points)
