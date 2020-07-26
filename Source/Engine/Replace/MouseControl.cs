@@ -65,14 +65,11 @@ namespace EcoSim
         {
             GetMouseAndAdjust();
 
-
             if (newMouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && oldMouse.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
             {
                 firstMouse = newMouse;
                 firstMousePos = newMousePos = GetScreenPos(firstMouse);
             }
-
-
         }
 
         public void UpdateOld()

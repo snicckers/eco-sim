@@ -46,10 +46,15 @@ namespace EcoSim
         {
             Globals._content = this.Content;
             Globals._spriteBatch = new SpriteBatch(GraphicsDevice);
-
             
-            //--- Load World
+            //--- Load World:
             _world = new Level();
+
+            //--- Load Camera:
+            Globals._camera = new Camera2D( Globals._spriteBatch.GraphicsDevice.Viewport, 
+                                            Globals._mapWidth, 
+                                            Globals._mapHeight, 
+                                            Globals._initialZoom);
         }
 
         /// <summary>
@@ -83,9 +88,12 @@ namespace EcoSim
         {
             GraphicsDevice.Clear(Globals._colorA);
 
-            Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            //Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             //Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, Globals.Camera2D.TranslationMatrix);
-
+            Globals._spriteBatch.Begin(SpriteSortMode.BackToFront,
+                    null, null, null, null, null,
+                    Globals._camera.GetTransformation());
+            
             _world.Draw();
 
             Globals._spriteBatch.End();

@@ -44,8 +44,8 @@ namespace EcoSim.Source.Simulation
             _texture = Globals._content.Load<Texture2D>(Path);
             _color = Globals._colorC;
             _dimensions = new Vector2(12, 12);
-            _sightRange = 50.0f;
-            _velocity = 2.0f;
+            _sightRange = 20.0f;
+            _velocity = 3.0f;
         }
 
         /* Update */

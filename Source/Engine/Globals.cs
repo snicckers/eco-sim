@@ -28,13 +28,12 @@ namespace EcoSim
         public static ContentManager _content;
         public static SpriteBatch _spriteBatch;
         public static GameTime _gameTime;
-        public static MouseControl _mouse;
+        public static Camera2D _camera;
+        public static float _initialZoom = 0.6f;
 
         // Camera:
         public static int _mapHeight = 5000;
         public static int _mapWidth = 3000;
-        
-
 
         // Colors: (make this its own class)
         public static Color _colorA = new Color(51, 34, 68);
