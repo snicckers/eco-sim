@@ -11,14 +11,14 @@ namespace EcoSim.Source.Simulation
     {
 
         /*------------------- FIELDS -----------------------------------------------*/
-        private Cursor _cursor;
         private EntityMediator _mediator;
         private EntityFactory _factory;
 
         /*------------------- INITIALIZE -------------------------------------------*/
         public Level()
         {
-            _cursor = new Cursor("Primitives\\Square");
+            Globals._cursor = new Cursor("Primitives\\Square");
+            Globals._mouse = new MouseControl();
 
             _mediator = new EntityMediator();
             _factory = new EntityFactory();
@@ -43,7 +43,7 @@ namespace EcoSim.Source.Simulation
             // Transform mouse input from view to world position
             Matrix inverse = Matrix.Invert(Globals._camera.GetTransformation());
             Vector2 mousePos = Vector2.Transform(new Vector2(mouseState.X, mouseState.Y), inverse);
-            _cursor.Update(mousePos);
+            Globals._cursor.Update(mousePos);
 
             //--- End Input During Update
             Globals._mouse.UpdateOld();
@@ -55,7 +55,7 @@ namespace EcoSim.Source.Simulation
         {
             // Draw Order: Last item is drawn on top. 
             _mediator.Draw();
-            _cursor.Draw();
+            Globals._cursor.Draw();
         }
 
         /*------------------- METHODS ----------------------------------------------*/
@@ -63,7 +63,7 @@ namespace EcoSim.Source.Simulation
         {
             if ((mouseState.LeftButton == ButtonState.Pressed) && (Keyboard.GetState().IsKeyDown(Keys.F)))
             {
-                Vector2 InitialPosition = new Vector2(_cursor.Position.X, _cursor.Position.Y);
+                Vector2 InitialPosition = new Vector2(Globals._cursor.Position.X, Globals._cursor.Position.Y);
                 _mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, InitialPosition));
             }
             if (Keyboard.GetState().IsKeyDown(Keys.X))
@@ -71,19 +71,15 @@ namespace EcoSim.Source.Simulation
                 _mediator.RemoveAll();
             }
 
-            //int previousScroll;
-            //// Adjust zoom if the mouse wheel has moved
-            //if (mouseState.ScrollWheelValue > previousScroll)
-            //    Globals._camera.Zoom += zoomIncrement;
-            //else if (mouseState.ScrollWheelValue < previousScroll)
-            //    Globals._camera.Zoom -= zoomIncrement;
+            if (keyState.IsKeyDown(Keys.E))
+                Globals._camera.Zoom += 0.01f;
 
-            //previousScroll = mouseState.ScrollWheelValue;
+            if (keyState.IsKeyDown(Keys.Q))
+                Globals._camera.Zoom -= 0.01f;
 
             // Move the camera when the arrow keys are pressed
             Vector2 movement = Vector2.Zero;
-            Viewport vp = Globals._spriteBatch.GraphicsDevice.Viewport;
-
+           
             if (keyState.IsKeyDown(Keys.Left))
                 movement.X--;
             if (keyState.IsKeyDown(Keys.Right))

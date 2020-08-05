@@ -125,10 +125,5 @@ namespace EcoSim.Source.Simulation
                 _position -= Direction * _velocity;
             }
         }
-
-        
-
-
-
     }
 }

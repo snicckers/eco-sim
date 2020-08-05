@@ -23,10 +23,11 @@ namespace EcoSim.Source.Engine
 {
     public class Camera2D
     {
-        private const float zoomUpperLimit = 1.5f;
-        private const float zoomLowerLimit = .5f;
+        private const float _zoomUpperLimit = 1.5f;
+        private const float _zoomLowerLimit = .5f;
 
         private float _zoom;
+        private float _oldZoom;
         private Matrix _transform;
         private Vector2 _pos;
         private float _rotation;
@@ -38,6 +39,7 @@ namespace EcoSim.Source.Engine
         public Camera2D(Viewport viewport, int worldWidth, int worldHeight, float initialZoom)
         {
             _zoom = initialZoom;
+            _oldZoom = initialZoom;
             _rotation = 0.0f;
             _pos = Vector2.Zero;
             _viewportWidth = viewport.Width;
@@ -54,10 +56,10 @@ namespace EcoSim.Source.Engine
             set
             {
                 _zoom = value;
-                if (_zoom < zoomLowerLimit)
-                    _zoom = zoomLowerLimit;
-                if (_zoom > zoomUpperLimit)
-                    _zoom = zoomUpperLimit;
+                if (_zoom < _zoomLowerLimit)
+                    _zoom = _zoomLowerLimit;
+                if (_zoom > _zoomUpperLimit)
+                    _zoom = _zoomUpperLimit;
             }
         }
 
@@ -101,12 +103,21 @@ namespace EcoSim.Source.Engine
 
         public Matrix GetTransformation()
         {
+         
+
+            float width = _pos.X - Globals._cursor.Position.X;
+            float height = _pos.Y + Globals._cursor.Position.Y;
+
+            _pos.X -= width * (1 - (_zoom /_oldZoom));
+            _pos.Y -= height * (1 - (_zoom / _oldZoom));
+
+            _oldZoom = _zoom;
+
             _transform =
                Matrix.CreateTranslation(new Vector3(-_pos.X, -_pos.Y, 0)) *
                Matrix.CreateRotationZ(Rotation) *
                Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-               Matrix.CreateTranslation(new Vector3(_viewportWidth * 0.5f,
-                   _viewportHeight * 0.5f, 0));
+               Matrix.CreateTranslation(new Vector3(_viewportWidth * 0.5f, _viewportHeight * 0.5f, 0));
 
             return _transform;
         }

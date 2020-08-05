@@ -29,7 +29,9 @@ namespace EcoSim
         public static SpriteBatch _spriteBatch;
         public static GameTime _gameTime;
         public static Camera2D _camera;
+        public static MouseControl _mouse;
         public static float _initialZoom = 0.6f;
+        public static Cursor _cursor;
 
         // Camera:
         public static int _mapHeight = 5000;
