@@ -26,10 +26,10 @@ namespace EcoSim.Source.Engine
         private const float _zoomUpperLimit = 1.5f;
         private const float _zoomLowerLimit = .5f;
 
+        private float _newZoom;
         private float _zoom;
-        private float _oldZoom;
         private Matrix _transform;
-        private Vector2 _pos;
+        private Vector2 _pos; // center of camera
         private float _rotation;
         private int _viewportWidth;
         private int _viewportHeight;
@@ -39,7 +39,7 @@ namespace EcoSim.Source.Engine
         public Camera2D(Viewport viewport, int worldWidth, int worldHeight, float initialZoom)
         {
             _zoom = initialZoom;
-            _oldZoom = initialZoom;
+            _newZoom = initialZoom;
             _rotation = 0.0f;
             _pos = Vector2.Zero;
             _viewportWidth = viewport.Width;
@@ -52,14 +52,13 @@ namespace EcoSim.Source.Engine
 
         public float Zoom
         {
-            get { return _zoom; }
-            set
-            {
-                _zoom = value;
-                if (_zoom < _zoomLowerLimit)
-                    _zoom = _zoomLowerLimit;
-                if (_zoom > _zoomUpperLimit)
-                    _zoom = _zoomUpperLimit;
+            get { return _newZoom; }
+            set {
+                _newZoom = value;
+                if (_newZoom < _zoomLowerLimit)
+                    _newZoom = _zoomLowerLimit;
+                if (_newZoom > _zoomUpperLimit)
+                    _newZoom = _zoomUpperLimit; 
             }
         }
 
@@ -103,21 +102,15 @@ namespace EcoSim.Source.Engine
 
         public Matrix GetTransformation()
         {
-         
 
-            float width = _pos.X - Globals._cursor.Position.X;
-            float height = _pos.Y + Globals._cursor.Position.Y;
+            _pos = Globals._cursor.Position + (_zoom / _newZoom) * (_pos - Globals._cursor.Position);
+            _zoom = _newZoom;
 
-            _pos.X -= width * (1 - (_zoom /_oldZoom));
-            _pos.Y -= height * (1 - (_zoom / _oldZoom));
-
-            _oldZoom = _zoom;
 
             _transform =
                Matrix.CreateTranslation(new Vector3(-_pos.X, -_pos.Y, 0)) *
                Matrix.CreateRotationZ(Rotation) *
-               Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-               Matrix.CreateTranslation(new Vector3(_viewportWidth * 0.5f, _viewportHeight * 0.5f, 0));
+               Matrix.CreateScale(new Vector3(_zoom, _zoom, 1));
 
             return _transform;
         }
