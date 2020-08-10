@@ -34,14 +34,24 @@ namespace EcoSim.Source.Simulation
         
         /* Update */
         public void Update(GameTime gameTime)
-        {            
+        {
+            List<BasicEntity> ToBeRemoved = new List<BasicEntity>();
+
             foreach (BasicEntity e in _entities)
             {
-                
                 e.Update(_entities, gameTime);
-            }
-        }
 
+                if (e.Delete)
+                    ToBeRemoved.Add(e);
+                    //RemoveEntity(e, ToBeRemoved);
+            }
+
+            foreach (BasicEntity e in ToBeRemoved)
+            {
+                _entities.Remove(e);
+            }
+
+        }
 
         /* Draw */
         public void Draw()
@@ -52,16 +62,16 @@ namespace EcoSim.Source.Simulation
             }
         }
 
-
         /* Methods */
         public void AddEntity(BasicEntity ENTITY)
         {
             _entities.Add(ENTITY);
         }
 
-        public void RemoveEntity(BasicEntity Entity)
+        public void RemoveEntity(BasicEntity Entity, List<BasicEntity> ToBeRemoved)
         {
-            _entities.Remove(Entity);
+            ToBeRemoved.Add(Entity);
+            //_entities.Remove(Entity);
         }
 
         public void RemoveAll()

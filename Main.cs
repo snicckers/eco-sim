@@ -27,16 +27,13 @@ namespace EcoSim
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Globals._screenWidth = 800;
-            Globals._screenHeight = 600;
+            Globals.ScreenWidth = 800;
+            Globals.ScreenHeight = 600;
             Window.AllowUserResizing = true;
 
-            _graphics.PreferredBackBufferWidth = Globals._screenWidth;
-            _graphics.PreferredBackBufferHeight = Globals._screenHeight;
+            _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Globals.ScreenHeight;
             _graphics.ApplyChanges();
-
-            //Globals.Camera2D.ViewportHeight = _graphics.GraphicsDevice.Viewport.Height;
-            //Globals.Camera2D.ViewportWidth = _graphics.GraphicsDevice.Viewport.Width;
 
             base.Initialize();
         }
@@ -52,8 +49,8 @@ namespace EcoSim
 
             //--- Load Camera:
             Globals._camera = new Camera2D( Globals._spriteBatch.GraphicsDevice.Viewport, 
-                                            Globals._mapWidth, 
-                                            Globals._mapHeight, 
+                                            Globals.MapWidth, 
+                                            Globals.MapHeight, 
                                             Globals._initialZoom);
         }
 

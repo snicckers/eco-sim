@@ -24,7 +24,7 @@ namespace EcoSim
 
         /*------------------- FIELDS -----------------------------------------------*/
         // Game World:
-        public static int _screenHeight, _screenWidth;
+        private static int _screenHeight, _screenWidth;
         public static ContentManager _content;
         public static SpriteBatch _spriteBatch;
         public static GameTime _gameTime;
@@ -34,8 +34,8 @@ namespace EcoSim
         public static Cursor _cursor;
 
         // Camera:
-        public static int _mapHeight = 5000;
-        public static int _mapWidth = 3000;
+        private static int _mapHeight = 2000;
+        private static int _mapWidth = 4000;
 
         // Colors: (make this its own class)
         public static Color _colorA = new Color(51, 34, 68);
@@ -43,6 +43,12 @@ namespace EcoSim
         public static Color _colorC = new Color(170, 119, 153);
         public static Color _colorD = new Color(221, 153, 153);
         public static Color _colorE = new Color(255, 221, 153);
+
+        public static int ScreenHeight { get => _screenHeight; set => _screenHeight = value; }
+        public static int ScreenWidth { get => _screenWidth; set => _screenWidth = value; }
+        public static int MapHeight { get => _mapHeight; set => _mapHeight = value; }
+        public static int MapWidth { get => _mapWidth; set => _mapWidth = value; }
+
 
         /*------------------- METHODS ----------------------------------------------*/
         // Return Distance (Between 2 points)
@@ -92,7 +98,7 @@ namespace EcoSim
         }
 
         // Draw a line between two points
-        public static void DrawLine(SpriteBatch Batch, Vector2 begin, Vector2 end, Color color, Texture2D Tex, int width = 1)
+        public static void DrawLine(SpriteBatch Batch, Vector2 begin, Vector2 end, Color color, Texture2D Tex, int width)
         {
             Rectangle r = new Rectangle((int)begin.X, (int)begin.Y, (int)(end - begin).Length() + width, width);
             Vector2 v = Vector2.Normalize(begin - end);

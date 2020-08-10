@@ -23,8 +23,8 @@ namespace EcoSim.Source.Engine
 {
     public class Camera2D
     {
-        private const float _zoomUpperLimit = 1.5f;
-        private const float _zoomLowerLimit = .5f;
+        private const float _zoomUpperLimit = 3.5f;
+        private const float _zoomLowerLimit = .25f;
 
         private float _newZoom;
         private float _zoom;
@@ -46,6 +46,7 @@ namespace EcoSim.Source.Engine
             _viewportHeight = viewport.Height;
             _worldWidth = worldWidth;
             _worldHeight = worldHeight;
+
         }
 
         #region Properties
@@ -87,14 +88,14 @@ namespace EcoSim.Source.Engine
                 float bottomBarrier = (float)_viewportHeight *
                        .5f / _zoom;
                 _pos = value;
-                if (_pos.X < leftBarrier)
-                    _pos.X = leftBarrier;
-                if (_pos.X > rightBarrier)
-                    _pos.X = rightBarrier;
-                if (_pos.Y > topBarrier)
-                    _pos.Y = topBarrier;
-                if (_pos.Y < bottomBarrier)
-                    _pos.Y = bottomBarrier;
+                //if (_pos.X < leftBarrier)
+                //    _pos.X = leftBarrier;
+                //if (_pos.X > rightBarrier)
+                //    _pos.X = rightBarrier;
+                //if (_pos.Y > topBarrier)
+                //    _pos.Y = topBarrier;
+                //if (_pos.Y < bottomBarrier)
+                //    _pos.Y = bottomBarrier;
             }
         }
 
@@ -102,10 +103,8 @@ namespace EcoSim.Source.Engine
 
         public Matrix GetTransformation()
         {
-
             _pos = Globals._cursor.Position + (_zoom / _newZoom) * (_pos - Globals._cursor.Position);
             _zoom = _newZoom;
-
 
             _transform =
                Matrix.CreateTranslation(new Vector3(-_pos.X, -_pos.Y, 0)) *
