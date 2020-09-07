@@ -44,6 +44,26 @@ namespace EcoSim
         public static Color _colorD = new Color(221, 153, 153);
         public static Color _colorE = new Color(255, 221, 153);
 
+        // Colors: Dark Actionable
+        public static Color _colorDA_A = new Color(69, 172, 229);
+        public static Color _colorDA_B = new Color(45, 115, 153);
+        public static Color _colorDA_C = new Color(30, 77, 102);
+
+        // Colors: Status Green
+        public static Color _colorG_A = new Color(180, 227, 79);
+        public static Color _colorG_B = new Color(127, 174, 27);
+        public static Color _colorG_C = new Color(66, 88, 14);
+
+        // Colors: Status Red
+        public static Color _colorSR_A = new Color(249, 165, 159);
+        public static Color _colorSR_D = new Color(243, 67, 54);
+        public static Color _colorSR_C = new Color(180, 0, 0);
+
+        // Colors: Greys
+        public static Color _colorGrey_A = new Color(12, 20, 25);
+        public static Color _colorGrey_B = new Color(103, 126, 140);
+        public static Color _colorGrey_C = new Color(182, 195, 204);
+
         public static int ScreenHeight { get => _screenHeight; set => _screenHeight = value; }
         public static int ScreenWidth { get => _screenWidth; set => _screenWidth = value; }
         public static int MapHeight { get => _mapHeight; set => _mapHeight = value; }
@@ -106,5 +126,25 @@ namespace EcoSim
             if (begin.Y > end.Y) angle = MathHelper.TwoPi - angle;
             Batch.Draw(Tex, r, null, color, angle, Vector2.Zero, SpriteEffects.None, 0);
         }
+
+        // Draw borders around the outside of the map
+        public static void DrawBorders(Color color)
+        {
+            Texture2D _texture = Globals._content.Load<Texture2D>("Primitives\\Square");
+            Vector2 TopLeft = new Vector2(0.0f, 0.0f);
+            Vector2 TopRight = new Vector2(Globals.MapWidth, 0.0f);
+            Vector2 BottomLeft = new Vector2(0.0f, Globals.MapHeight);
+            Vector2 BottomRight = new Vector2(Globals.MapWidth, Globals.MapHeight);
+
+            Rectangle rec = new Rectangle(Globals.MapWidth / 2, Globals.MapHeight / 2, Globals.MapWidth, Globals.MapHeight);
+            Vector2 center = new Vector2(_texture.Bounds.Width / 2, _texture.Bounds.Height / 2);
+            Globals._spriteBatch.Draw(_texture, rec, null, color, 0.0f, center, new SpriteEffects(), 0);
+
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._colorE, _texture, 5);
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._colorE, _texture, 5);
+            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._colorE, _texture, 5);
+            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._colorE, _texture, 5);
+        }
     }
 }
+

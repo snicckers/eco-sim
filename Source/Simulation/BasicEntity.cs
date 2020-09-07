@@ -44,9 +44,9 @@ namespace EcoSim.Source.Simulation
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
-            _color = Globals._colorC;
+            _color = Globals._colorG_B;
             _dimensions = new Vector2(12, 12);
-            _sightRange = 50.0f;
+            _sightRange = 20.0f;
             _velocity = 3.0f;
         }
 
@@ -83,7 +83,7 @@ namespace EcoSim.Source.Simulation
                     Globals.DrawLine(Globals._spriteBatch, Point_A, Point_B, Globals._colorE, _texture, 1);
 
                     // Change entity color if running away
-                    _color = Globals._colorD;
+                    _color = Globals._colorG_A;
                 }
                 else
                 {
@@ -94,7 +94,7 @@ namespace EcoSim.Source.Simulation
             else
             {
                 _drawingLine = false;
-                _color = Globals._colorC;
+                _color = Globals._colorG_C;
             }
 
             // Draw Self:
@@ -120,8 +120,8 @@ namespace EcoSim.Source.Simulation
                 _nearestTarget = Target;
                 _scanTimer = 0.0f;
             }
-            Move();
 
+            Move();
         }
 
         // Move 
@@ -149,8 +149,6 @@ namespace EcoSim.Source.Simulation
             // How do I get a direction from a line
             // Can I get an xy point that is a point on the line, closest to the entity? 
             // That seems like the best way to do it
-
-
         }
 
         // Check the distance...

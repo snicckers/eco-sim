@@ -83,7 +83,7 @@ namespace EcoSim
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Globals._colorA);
+            GraphicsDevice.Clear(Color.Black);
 
             //Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             //Globals._spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, Globals.Camera2D.TranslationMatrix);

@@ -54,11 +54,13 @@ namespace EcoSim.Source.Simulation
         /*------------------- DRAW -------------------------------------------------*/
         public virtual void Draw()
         {
+            Globals.DrawBorders(Globals._colorGrey_A); // This must be drawn first
+
             // Draw Order: Last item is drawn on top. 
             _mediator.Draw();
             Globals._cursor.Draw();
 
-            DrawBorders();
+            
         }
 
         /*------------------- METHODS ----------------------------------------------*/
@@ -94,22 +96,6 @@ namespace EcoSim.Source.Simulation
                 movement.Y++;
 
             Globals._camera.Pos += movement * 20;
-        }
-
-        // Should this be put into globals or made into its own class???
-        // Probably put into Globals
-        private void DrawBorders()
-        {
-            Texture2D _texture = Globals._content.Load<Texture2D>("Primitives\\Square"); 
-            Vector2 TopLeft = new Vector2(0.0f, 0.0f);
-            Vector2 TopRight = new Vector2(Globals.MapWidth, 0.0f);
-            Vector2 BottomLeft = new Vector2(0.0f, Globals.MapHeight);
-            Vector2 BottomRight = new Vector2(Globals.MapWidth, Globals.MapHeight);
-
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._colorE, _texture, 5);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace EcoSim.Source.Engine
 {
     public class Camera2D
     {
-        private const float _zoomUpperLimit = 3.5f;
+        private const float _zoomUpperLimit = 5.5f;
         private const float _zoomLowerLimit = .25f;
 
         private float _newZoom;
