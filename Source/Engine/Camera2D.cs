@@ -46,7 +46,6 @@ namespace EcoSim.Source.Engine
             _viewportHeight = viewport.Height;
             _worldWidth = worldWidth;
             _worldHeight = worldHeight;
-
         }
 
         #region Properties
@@ -79,23 +78,11 @@ namespace EcoSim.Source.Engine
             get { return _pos; }
             set
             {
-                float leftBarrier = (float)_viewportWidth *
-                       .5f / _zoom;
-                float rightBarrier = _worldWidth -
-                       (float)_viewportWidth * .5f / _zoom;
-                float topBarrier = _worldHeight -
-                       (float)_viewportHeight * .5f / _zoom;
-                float bottomBarrier = (float)_viewportHeight *
-                       .5f / _zoom;
+                float leftBarrier = (float)_viewportWidth * 0.5f / _zoom;
+                float rightBarrier = _worldWidth - (float)_viewportWidth * .5f / _zoom;
+                float topBarrier = _worldHeight - (float)_viewportHeight * .5f / _zoom;
+                float bottomBarrier = (float)_viewportHeight * 0.5f / _zoom;
                 _pos = value;
-                //if (_pos.X < leftBarrier)
-                //    _pos.X = leftBarrier;
-                //if (_pos.X > rightBarrier)
-                //    _pos.X = rightBarrier;
-                //if (_pos.Y > topBarrier)
-                //    _pos.Y = topBarrier;
-                //if (_pos.Y < bottomBarrier)
-                //    _pos.Y = bottomBarrier;
             }
         }
 
@@ -103,7 +90,8 @@ namespace EcoSim.Source.Engine
 
         public Matrix GetTransformation()
         {
-            _pos = Globals._cursor.Position + (_zoom / _newZoom) * (_pos - Globals._cursor.Position);
+            // Zoom "towards" mouse. Set the center of the camera to be slightly closer to the mouse each scan when zooming
+            _pos = Globals.Mouse.WorldLocation + (_zoom / _newZoom) * (_pos - Globals.Mouse.WorldLocation);
             _zoom = _newZoom;
 
             _transform =

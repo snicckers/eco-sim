@@ -47,9 +47,9 @@
     <Compile Include="Source\Engine\LayerDepth.cs" />
     <Compile Include="Source\Engine\Replace\BasicTimeControl.cs" />
     <Compile Include="Source\Engine\Globals.cs" />
-    <Compile Include="Source\Engine\Cursor.cs" />
-    <Compile Include="Source\Engine\Replace\MouseControl.cs" />
-    <Compile Include="Source\Simulation\BasicEntity.cs" />
+    <Compile Include="Source\Engine\Replace\MouseRef.cs" />
+    <Compile Include="Source\Engine\NicksMouse.cs" />
+    <Compile Include="Source\Simulation\Entity.cs" />
     <Compile Include="Source\Simulation\EntityFactory.cs" />
     <Compile Include="Source\Simulation\EntityMediator.cs" />
     <Compile Include="Source\Simulation\Level.cs" />

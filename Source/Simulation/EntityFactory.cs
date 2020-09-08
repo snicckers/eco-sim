@@ -27,7 +27,7 @@ namespace EcoSim.Source.Simulation
 
     class EntityFactory
     {
-        public BasicEntity Factory(EntityTypes Type, Vector2 Position)
+        public Entity Factory(EntityTypes Type, Vector2 Position)
         {
             switch (Type)
             {
@@ -45,7 +45,7 @@ namespace EcoSim.Source.Simulation
 
                 // Create Base Entity 
                 case EntityTypes.e_baseEntity:
-                    return new BasicEntity(Position, "Primitives\\Square");
+                    return new Entity(Position, "Primitives\\Square");
 
                 // Null
                 default:

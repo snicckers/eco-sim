@@ -19,9 +19,7 @@ namespace EcoSim
     class MouseControl
     {
         public bool dragging, rightDrag;
-
         public Vector2 newMousePos, oldMousePos, firstMousePos, newMouseAdjustedPos, systemCursorPos, screenLoc;
-
         public MouseState newMouse, oldMouse, firstMouse;
 
         public MouseControl()
@@ -37,9 +35,6 @@ namespace EcoSim
             firstMousePos = new Vector2(newMouse.Position.X, newMouse.Position.Y);
 
             GetMouseAndAdjust();
-
-            //screenLoc = new Vector2((int)(systemCursorPos.X/Globals.screenWidth), (int)(systemCursorPos.Y/Globals.screenHeight));
-
         }
 
         #region Properties
@@ -164,8 +159,6 @@ namespace EcoSim
                     rightDrag = true;
                 }
             }
-
-
 
             return holding;
         }

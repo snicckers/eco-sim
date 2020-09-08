@@ -29,9 +29,8 @@ namespace EcoSim
         public static SpriteBatch _spriteBatch;
         public static GameTime _gameTime;
         public static Camera2D _camera;
-        public static MouseControl _mouse;
+        private static NicksMouse _mouse;
         public static float _initialZoom = 0.6f;
-        public static Cursor _cursor;
 
         // Camera:
         private static int _mapHeight = 2000;
@@ -68,6 +67,7 @@ namespace EcoSim
         public static int ScreenWidth { get => _screenWidth; set => _screenWidth = value; }
         public static int MapHeight { get => _mapHeight; set => _mapHeight = value; }
         public static int MapWidth { get => _mapWidth; set => _mapWidth = value; }
+        internal static NicksMouse Mouse { get => _mouse; set => _mouse = value; }
 
 
         /*------------------- METHODS ----------------------------------------------*/
@@ -90,14 +90,14 @@ namespace EcoSim
         }
 
         // Return the nearest entity to the reference point from a list of entities
-        public static BasicEntity GetNearest(List<BasicEntity> EntityList, BasicEntity Reference, float Range)
+        public static Entity GetNearest(List<Entity> EntityList, Entity Reference, float Range)
         {
-            BasicEntity BestTarget = null;
+            Entity BestTarget = null;
             float Distance = Range * Range; // Because our distance comparison has no square root
 
             if (EntityList != null)
             {
-                foreach (BasicEntity Entity in EntityList)
+                foreach (Entity Entity in EntityList)
                 {
                     Vector2 Difference = Entity.Position - Reference.Position;
                     float CurrentDistance = Difference.X * Difference.X + Difference.Y * Difference.Y;

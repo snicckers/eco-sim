@@ -22,7 +22,7 @@ namespace EcoSim.Source.Simulation
     {
         /* Fields */
         // Consider using a dictionary?
-        private List<BasicEntity> _entities = new List<BasicEntity>();
+        private List<Entity> _entities = new List<Entity>();
 
 
         /* Constructors */
@@ -35,9 +35,9 @@ namespace EcoSim.Source.Simulation
         /* Update */
         public void Update(GameTime gameTime)
         {
-            List<BasicEntity> ToBeRemoved = new List<BasicEntity>();
+            List<Entity> ToBeRemoved = new List<Entity>();
 
-            foreach (BasicEntity e in _entities)
+            foreach (Entity e in _entities)
             {
                 e.Update(_entities, gameTime);
 
@@ -46,7 +46,7 @@ namespace EcoSim.Source.Simulation
                     //RemoveEntity(e, ToBeRemoved);
             }
 
-            foreach (BasicEntity e in ToBeRemoved)
+            foreach (Entity e in ToBeRemoved)
             {
                 _entities.Remove(e);
             }
@@ -56,19 +56,19 @@ namespace EcoSim.Source.Simulation
         /* Draw */
         public void Draw()
         {
-            foreach (BasicEntity e in _entities)
+            foreach (Entity e in _entities)
             {
                 e.Draw(_entities);
             }
         }
 
         /* Methods */
-        public void AddEntity(BasicEntity ENTITY)
+        public void AddEntity(Entity ENTITY)
         {
             _entities.Add(ENTITY);
         }
 
-        public void RemoveEntity(BasicEntity Entity, List<BasicEntity> ToBeRemoved)
+        public void RemoveEntity(Entity Entity, List<Entity> ToBeRemoved)
         {
             ToBeRemoved.Add(Entity);
             //_entities.Remove(Entity);

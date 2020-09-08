@@ -19,13 +19,13 @@ using EcoSim.Source.Engine;
 
 namespace EcoSim.Source.Simulation
 {
-    class BasicEntity
+    class Entity
     {
         /* --------- Fields ------------------------------------------ */
         private Vector2 _position, _dimensions;
         private Color _color;
         private Texture2D _texture;
-        private BasicEntity _nearestTarget;
+        private Entity _nearestTarget;
         private bool _drawingLine;
         private float _sightRange;
         private float _scanTimer;
@@ -40,7 +40,7 @@ namespace EcoSim.Source.Simulation
         public bool Delete { get => _delete; }
 
         /* ---------- Constructors ----------------------------------- */
-        public BasicEntity(Vector2 Position, string Path)
+        public Entity(Vector2 Position, string Path)
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
@@ -51,7 +51,7 @@ namespace EcoSim.Source.Simulation
         }
 
         /* ---------- Update ----------------------------------------- */
-        public virtual void Update(List<BasicEntity> EntityList, GameTime gameTime)
+        public virtual void Update(List<Entity> EntityList, GameTime gameTime)
         {
             Flee(EntityList, gameTime);
             CheckForRemoval();
@@ -67,7 +67,7 @@ namespace EcoSim.Source.Simulation
         }
 
         // Draw the object, and a line to the nearest target
-        public void Draw(List<BasicEntity> EntityList)
+        public void Draw(List<Entity> EntityList)
         {
             // Draw Line to nearest entity if it is not null:
             if (_nearestTarget != null)
@@ -106,10 +106,10 @@ namespace EcoSim.Source.Simulation
         /* ---------- Methods ---------------------------------------- */
 
         // Run away from the nearest target
-        private void Flee(List<BasicEntity> EntityList, GameTime gameTime)
+        private void Flee(List<Entity> EntityList, GameTime gameTime)
         {
 
-            BasicEntity Target = _nearestTarget; // This prevents unwanted stuttering / update delays
+            Entity Target = _nearestTarget; // This prevents unwanted stuttering / update delays
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // Time control.
             _scanTimer += deltaTime;
