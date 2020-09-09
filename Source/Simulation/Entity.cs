@@ -21,43 +21,54 @@ namespace EcoSim.Source.Simulation
 {
     class Entity
     {
-        /* --------- Fields ------------------------------------------ */
-        private Vector2 _position, _dimensions;
+        /*------------------- Fields -----------------------------------------------*/
+        private Vector2 _position, _dimensions, _direction;
         private Color _color;
         private Texture2D _texture;
-        private Entity _nearestTarget;
         private bool _drawingLine;
         private float _sightRange;
-        private float _scanTimer;
-        private static float _scanTime = 0.1f;
-        private float _velocity;
         private bool _delete;
 
-        /* ---------- Accessors -------------------------------------- */
+        // Behaviour:
+        private bool _fleeing;
+        private float _velocity;
+        private Entity _nearestTarget;
+
+        // Timers:
+        private float _scanTimer;
+        private static float _scanTime = 0.1f;
+        private float _fleeTimer;
+        private static float _fleeTime = 2.0f;
+
+        /*------------------- Accessors --------------------------------------------*/
         public Vector2 Position { get => _position; set => _position = value; }
         public float SightRange { get => _sightRange; }
         public bool DrawingLine { get => _drawingLine; }
         public bool Delete { get => _delete; }
 
-        /* ---------- Constructors ----------------------------------- */
+        /*------------------- Constructors -----------------------------------------*/
         public Entity(Vector2 Position, string Path)
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
             _color = Globals._colorG_B;
             _dimensions = new Vector2(12, 12);
-            _sightRange = 20.0f;
+            _direction = new Vector2(0, 0);
+            _sightRange = 40.0f;
             _velocity = 3.0f;
+
+            //Behaviour:
+            _fleeing = false;
         }
 
-        /* ---------- Update ----------------------------------------- */
+        /*------------------- Update -----------------------------------------------*/
         public virtual void Update(List<Entity> EntityList, GameTime gameTime)
         {
-            Flee(EntityList, gameTime);
+            Behaviour(EntityList, gameTime);
             CheckForRemoval();
         }
 
-        /*---------- Draw -------------------------------------------- */
+        /*------------------- Draw -------------------------------------------------*/
         public void Draw()
         {
             Rectangle rec = new Rectangle((int)Position.X, (int)Position.Y, (int)_dimensions.X, (int)_dimensions.Y);
@@ -103,14 +114,14 @@ namespace EcoSim.Source.Simulation
             Globals._spriteBatch.Draw(_texture, rec, null, _color, 0.0f, center, new SpriteEffects(), 0);
         }
 
-        /* ---------- Methods ---------------------------------------- */
+        /*------------------- Methods ----------------------------------------------*/
 
         // Run away from the nearest target
-        private void Flee(List<Entity> EntityList, GameTime gameTime)
+        private void Behaviour(List<Entity> EntityList, GameTime gameTime)
         {
-
             Entity Target = _nearestTarget; // This prevents unwanted stuttering / update delays
 
+            // Scan for enemies:
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // Time control.
             _scanTimer += deltaTime;
 
@@ -121,40 +132,71 @@ namespace EcoSim.Source.Simulation
                 _scanTimer = 0.0f;
             }
 
+            // Sets fleeing timer
+            if (_nearestTarget != null)
+            {
+                _fleeing = true;
+            }
+
+            // Run away / fleeing timer
+            if (_fleeing)
+            {
+                float deltaFleeTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                _fleeTimer += deltaFleeTime;
+
+                if (_fleeTimer > _fleeTime)
+                {
+                    _direction = new Vector2(0, 0);
+                    _fleeTimer = 0.0f;
+                    _fleeing = false;
+                }
+            }
+
+            CollisionAndBounds();
             Move();
+        }
+
+        // Reverse entity direction if it's tyring to move outside of map bounds
+        private void CollisionAndBounds()
+        {
+            int bounds = 20;
+            int halfBounds = bounds / 2;
+
+            // Horizontal wall collision:
+            if ((_position.X + 0) <= bounds)
+                _direction.X *= -1.0f;
+            if ((Globals.MapWidth - _position.X) <= bounds)
+                _direction.X *= -1.0f;
+
+            // Vertical Wall Collision:
+            if (_position.Y <= bounds)
+                _direction.Y *= -1.0f;
+            if ((Globals.MapHeight - _position.Y) <= bounds)
+                _direction.Y *= -1.0f;
+
+            // Horizontal wall relocation:
+            if ((_position.X + 0) <= halfBounds / 2)
+                _position.X += bounds;
+            if ((Globals.MapWidth - _position.X) <= halfBounds / 2)
+                _position.X -= bounds;
+
+            // Vertical Wall relocation:
+            if (_position.Y <= halfBounds)
+                _position.Y += bounds;
+            if ((Globals.MapHeight - _position.Y) <= halfBounds)
+                _position.Y -= bounds;
         }
 
         // Move 
         // This is a bit limited in its current state. 
         private void Move() // Pass in a Vector 3 instead?
         {
-            Vector2 Direction = new Vector2(0.0f, 0.0f);
-
             if (_nearestTarget != null) // Remove this and put it in its own "" method
             {
-                Direction = Globals.GetUnitVector(_position, _nearestTarget.Position);
-                
+                _direction = Globals.GetUnitVector(_position, _nearestTarget.Position);
             }
 
-            // If close to map boundry, set direction to opposite that of boundry
-            //else if ()
-            //{
-
-            //}
-
-            _position -= Direction * _velocity;
-
-            // How do we make it move away from the boundary?
-            // What if the line is not a vector?
-            // How do I get a direction from a line
-            // Can I get an xy point that is a point on the line, closest to the entity? 
-            // That seems like the best way to do it
-        }
-
-        // Check the distance...
-        private void IsCloseToLine()
-        {
-
+            _position -= _direction * _velocity;
         }
 
         // Mark the object for deletion if it is outside the bounds of the map:
@@ -166,7 +208,6 @@ namespace EcoSim.Source.Simulation
                 _delete = true;
             }    
         }
-
 
     }
 }

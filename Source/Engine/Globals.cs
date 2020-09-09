@@ -32,7 +32,7 @@ namespace EcoSim
         private static NicksMouse _mouse;
         public static float _initialZoom = 0.6f;
 
-        // Camera:
+        // Level:
         private static int _mapHeight = 2000;
         private static int _mapWidth = 4000;
 
@@ -52,6 +52,7 @@ namespace EcoSim
         public static Color _colorG_A = new Color(180, 227, 79);
         public static Color _colorG_B = new Color(127, 174, 27);
         public static Color _colorG_C = new Color(66, 88, 14);
+        public static Color _colorG_D = new Color(15, 25, 18);
 
         // Colors: Status Red
         public static Color _colorSR_A = new Color(249, 165, 159);
@@ -63,6 +64,7 @@ namespace EcoSim
         public static Color _colorGrey_B = new Color(103, 126, 140);
         public static Color _colorGrey_C = new Color(182, 195, 204);
 
+        /*------------------- Accessors --------------------------------------------*/
         public static int ScreenHeight { get => _screenHeight; set => _screenHeight = value; }
         public static int ScreenWidth { get => _screenWidth; set => _screenWidth = value; }
         public static int MapHeight { get => _mapHeight; set => _mapHeight = value; }

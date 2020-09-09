@@ -17,11 +17,12 @@ namespace EcoSim.Source.Simulation
         /*------------------- INITIALIZE -------------------------------------------*/
         public Level()
         {
-
             Globals.Mouse = new NicksMouse("Primitives\\Square");
 
             _mediator = new EntityMediator();
             _factory = new EntityFactory();
+
+
 
             // Testing:
             //_mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, new Vector2(-200.0f, -200.0f)));
@@ -31,23 +32,22 @@ namespace EcoSim.Source.Simulation
         /*------------------- UPDATE -----------------------------------------------*/
         public virtual void Update(GameTime gameTime)
         {
-            //--- User Input
+            // User Input:
             // Poll for current keyboard state:
             KeyboardState keyState = Keyboard.GetState();
             Controls(keyState);
 
-            //--- Game Updates Go Here:
+            // Game Updates Go Here:
             _mediator.Update(gameTime);
 
-
-            //--- End Input During Update
+            // End Input During Update:
             Globals.Mouse.Update();
         }
 
         /*------------------- DRAW -------------------------------------------------*/
         public virtual void Draw()
         {
-            Globals.DrawBorders(Globals._colorGrey_A); // This must be drawn first
+            Globals.DrawBorders(Globals._colorG_D); // This must be drawn first
 
             // Draw Order: Last item is drawn on top. 
             _mediator.Draw();
