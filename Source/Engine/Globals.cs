@@ -33,7 +33,7 @@ namespace EcoSim
         public static float _initialZoom = 0.6f;
 
         // Level:
-        private static int _mapHeight = 2000;
+        private static int _mapHeight = 2500;
         private static int _mapWidth = 4000;
 
         // Colors: (make this its own class)
@@ -63,6 +63,13 @@ namespace EcoSim
         public static Color _colorGrey_A = new Color(12, 20, 25);
         public static Color _colorGrey_B = new Color(103, 126, 140);
         public static Color _colorGrey_C = new Color(182, 195, 204);
+
+        // Custom Pallete 1
+        public static Color _richBlack = new Color(4, 15, 22);
+        public static Color _ghostWhite = new Color(251, 251, 255);
+        public static Color _cyanProcess = new Color(32, 206, 254);
+        public static Color _blueSapphire = new Color(14, 94, 129);
+        public static Color _RedEngineering = new Color(184, 12, 9);
 
         /*------------------- Accessors --------------------------------------------*/
         public static int ScreenHeight { get => _screenHeight; set => _screenHeight = value; }
@@ -142,10 +149,10 @@ namespace EcoSim
             Vector2 center = new Vector2(_texture.Bounds.Width / 2, _texture.Bounds.Height / 2);
             Globals._spriteBatch.Draw(_texture, rec, null, color, 0.0f, center, new SpriteEffects(), 0);
 
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._colorE, _texture, 5);
-            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._colorE, _texture, 5);
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._RedEngineering, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._RedEngineering, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._RedEngineering, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._RedEngineering, _texture, 10);
         }
     }
 }

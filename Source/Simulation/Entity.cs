@@ -38,7 +38,7 @@ namespace EcoSim.Source.Simulation
         private float _scanTimer;
         private static float _scanTime = 0.1f;
         private float _fleeTimer;
-        private static float _fleeTime = 2.0f;
+        private float _fleeTime;
 
         /*------------------- Accessors --------------------------------------------*/
         public Vector2 Position { get => _position; set => _position = value; }
@@ -51,11 +51,14 @@ namespace EcoSim.Source.Simulation
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
-            _color = Globals._colorG_B;
+            _color = Globals._blueSapphire;
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
-            _sightRange = 40.0f;
-            _velocity = 3.0f;
+            _sightRange = 30.0f;
+            _velocity = 4.0f;
+
+            Random rnd = new Random();
+            _fleeTime = (float)rnd.Next(0, 3); // Radomize the time that entities runs away
 
             //Behaviour:
             _fleeing = false;
@@ -91,10 +94,10 @@ namespace EcoSim.Source.Simulation
                     // Draw a line to the nearest target if it is not null:
                     Vector2 Point_A = this.Position;
                     Vector2 Point_B = this._nearestTarget.Position;
-                    Globals.DrawLine(Globals._spriteBatch, Point_A, Point_B, Globals._colorE, _texture, 1);
+                    Globals.DrawLine(Globals._spriteBatch, Point_A, Point_B, Globals._ghostWhite, _texture, 1);
 
                     // Change entity color if running away
-                    _color = Globals._colorG_A;
+                    _color = Globals._cyanProcess;
                 }
                 else
                 {
@@ -105,7 +108,7 @@ namespace EcoSim.Source.Simulation
             else
             {
                 _drawingLine = false;
-                _color = Globals._colorG_C;
+                _color = Globals._blueSapphire;
             }
 
             // Draw Self:
@@ -119,16 +122,13 @@ namespace EcoSim.Source.Simulation
         // Run away from the nearest target
         private void Behaviour(List<Entity> EntityList, GameTime gameTime)
         {
-            Entity Target = _nearestTarget; // This prevents unwanted stuttering / update delays
-
             // Scan for enemies:
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // Time control.
             _scanTimer += deltaTime;
 
             if (_scanTimer > _scanTime) // Limit the number of times that entities search for the nearest object
             {
-                Target = Globals.GetNearest(EntityList, this, this.SightRange);
-                _nearestTarget = Target;
+                _nearestTarget = Globals.GetNearest(EntityList, this, this.SightRange);
                 _scanTimer = 0.0f;
             }
 
@@ -144,12 +144,16 @@ namespace EcoSim.Source.Simulation
                 float deltaFleeTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _fleeTimer += deltaFleeTime;
 
-                if (_fleeTimer > _fleeTime)
+                if (_fleeTimer >= _fleeTime)
                 {
                     _direction = new Vector2(0, 0);
                     _fleeTimer = 0.0f;
                     _fleeing = false;
                 }
+            } 
+            else if ((!_fleeing) && (_direction != new Vector2(0, 0))) 
+            {
+                _direction = new Vector2(0, 0); // Strange errors can pop up if you don't do this
             }
 
             CollisionAndBounds();
@@ -160,35 +164,35 @@ namespace EcoSim.Source.Simulation
         private void CollisionAndBounds()
         {
             int bounds = 20;
-            int halfBounds = bounds / 2;
 
             // Horizontal wall collision:
-            if ((_position.X + 0) <= bounds)
+            if ((_position.X + 0) <= bounds) 
+            {
                 _direction.X *= -1.0f;
+                _position.X += 5;
+            }
+
             if ((Globals.MapWidth - _position.X) <= bounds)
+            {
                 _direction.X *= -1.0f;
+                _position.X -= 5;
+            }
 
             // Vertical Wall Collision:
             if (_position.Y <= bounds)
+            {
                 _direction.Y *= -1.0f;
+                _position.Y += 5;
+            }
+
             if ((Globals.MapHeight - _position.Y) <= bounds)
+            {
                 _direction.Y *= -1.0f;
-
-            // Horizontal wall relocation:
-            if ((_position.X + 0) <= halfBounds / 2)
-                _position.X += bounds;
-            if ((Globals.MapWidth - _position.X) <= halfBounds / 2)
-                _position.X -= bounds;
-
-            // Vertical Wall relocation:
-            if (_position.Y <= halfBounds)
-                _position.Y += bounds;
-            if ((Globals.MapHeight - _position.Y) <= halfBounds)
-                _position.Y -= bounds;
+                _position.Y -= 5;
+            }
         }
 
         // Move 
-        // This is a bit limited in its current state. 
         private void Move() // Pass in a Vector 3 instead?
         {
             if (_nearestTarget != null) // Remove this and put it in its own "" method
@@ -196,7 +200,7 @@ namespace EcoSim.Source.Simulation
                 _direction = Globals.GetUnitVector(_position, _nearestTarget.Position);
             }
 
-            _position -= _direction * _velocity;
+            _position -= _direction * _velocity; // Run away
         }
 
         // Mark the object for deletion if it is outside the bounds of the map:

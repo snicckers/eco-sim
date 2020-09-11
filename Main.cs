@@ -27,8 +27,8 @@ namespace EcoSim
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Globals.ScreenWidth = 800;
-            Globals.ScreenHeight = 600;
+            Globals.ScreenWidth = 1400;
+            Globals.ScreenHeight = 800;
             Window.AllowUserResizing = true;
 
             _graphics.PreferredBackBufferWidth = Globals.ScreenWidth;
@@ -74,7 +74,12 @@ namespace EcoSim
 
            
             _world.Update(gameTime);
-            
+
+            // Camera & Window Mode:
+            Globals.ScreenHeight = GraphicsDevice.Viewport.Height;
+            Globals.ScreenWidth = GraphicsDevice.Viewport.Width;
+
+            Globals._camera.MouseMove();
 
             base.Update(gameTime);
         }

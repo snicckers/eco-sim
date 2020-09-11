@@ -23,7 +23,8 @@ namespace EcoSim.Source.Engine
 {
     public class Camera2D
     {
-        private const float _zoomUpperLimit = 5.5f;
+        /*------------------- FIELDS -----------------------------------------------*/
+        private const float _zoomUpperLimit = 30.0f;
         private const float _zoomLowerLimit = .25f;
 
         private float _newZoom;
@@ -36,6 +37,7 @@ namespace EcoSim.Source.Engine
         private int _worldWidth;
         private int _worldHeight;
 
+        /*------------------- Constructors -----------------------------------------*/
         public Camera2D(Viewport viewport, int worldWidth, int worldHeight, float initialZoom)
         {
             _zoom = initialZoom;
@@ -48,6 +50,7 @@ namespace EcoSim.Source.Engine
             _worldHeight = worldHeight;
         }
 
+        /*------------------- Methods ----------------------------------------------*/
         #region Properties
 
         public float Zoom
@@ -84,6 +87,24 @@ namespace EcoSim.Source.Engine
                 float bottomBarrier = (float)_viewportHeight * 0.5f / _zoom;
                 _pos = value;
             }
+        }
+
+        public void MouseMove()
+        {
+            int bounds = 25;
+            int scrollSpeed = 25;
+
+            if (Globals.Mouse.ScreenLocation.X <= bounds) // Left
+                this.Move(new Vector2(-scrollSpeed, 0));
+
+            if (Globals.Mouse.ScreenLocation.X >= Globals.ScreenWidth - bounds) // Right
+                this.Move(new Vector2(scrollSpeed, 0));
+
+            if (Globals.Mouse.ScreenLocation.Y <= bounds) // Up
+                this.Move(new Vector2(0, -scrollSpeed));
+
+            if (Globals.Mouse.ScreenLocation.Y >= Globals.ScreenHeight - bounds) // Down
+                this.Move(new Vector2(0, scrollSpeed));
         }
 
         #endregion

@@ -31,7 +31,7 @@ namespace EcoSim
 
         public MouseState OldMouse { get => _oldMouse; }
         public Vector2 WorldLocation { get => _worldLocation; set => _worldLocation = value; }
-        public Vector2 ScreenLocation { get => _screenLocation; set => _screenLocation = value; }
+        public Vector2 ScreenLocation { get => _oldMousePos; set => _oldMousePos = value; }
         public int PreviousScrollValue { get => _previousScrollValue; }
         public bool ScrollUp { get => _scrollUp; }
         public bool ScrollDown { get => _scrollDown; }
@@ -94,6 +94,11 @@ namespace EcoSim
             Matrix inverse = Matrix.Invert(Globals._camera.GetTransformation());
             Vector2 worldPos = Vector2.Transform(new Vector2(_oldMousePos.X, _oldMousePos.Y), inverse);
             _worldLocation = worldPos;
+        }
+
+        public void SetScreenPos()
+        {
+
         }
 
         public int MouseWheelChange()

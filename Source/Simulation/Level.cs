@@ -42,12 +42,14 @@ namespace EcoSim.Source.Simulation
 
             // End Input During Update:
             Globals.Mouse.Update();
+
+
         }
 
         /*------------------- DRAW -------------------------------------------------*/
         public virtual void Draw()
         {
-            Globals.DrawBorders(Globals._colorG_D); // This must be drawn first
+            Globals.DrawBorders(Globals._richBlack); // This must be drawn first
 
             // Draw Order: Last item is drawn on top. 
             _mediator.Draw();
@@ -55,7 +57,7 @@ namespace EcoSim.Source.Simulation
         }
 
         /*------------------- METHODS ----------------------------------------------*/
-        // Should this be made into its own class?
+        // Turn controls into it's own class
         private void Controls(KeyboardState keyState)
         {
             if ((Globals.Mouse.LeftClickDown()) && (Keyboard.GetState().IsKeyDown(Keys.F)))

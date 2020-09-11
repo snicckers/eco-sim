@@ -20,19 +20,19 @@ namespace EcoSim.Source.Simulation
 {
     class EntityMediator
     {
-        /* Fields */
+        /*------------------- FIELDS -----------------------------------------------*/
         // Consider using a dictionary?
         private List<Entity> _entities = new List<Entity>();
 
 
-        /* Constructors */
+        /*------------------- Constructors -----------------------------------------*/
         public EntityMediator()
         {
             // Ehh leave this blank for now.
         }
 
-        
-        /* Update */
+
+        /*------------------- Update -----------------------------------------------*/
         public void Update(GameTime gameTime)
         {
             List<Entity> ToBeRemoved = new List<Entity>();
@@ -53,7 +53,7 @@ namespace EcoSim.Source.Simulation
 
         }
 
-        /* Draw */
+        /*------------------- Draw -------------------------------------------------*/
         public void Draw()
         {
             foreach (Entity e in _entities)
@@ -62,7 +62,7 @@ namespace EcoSim.Source.Simulation
             }
         }
 
-        /* Methods */
+        /*------------------- Methods ----------------------------------------------*/
         public void AddEntity(Entity ENTITY)
         {
             _entities.Add(ENTITY);
