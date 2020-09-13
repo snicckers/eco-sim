@@ -58,7 +58,7 @@ namespace EcoSim.Source.Simulation
             _velocity = 4.0f;
 
             Random rnd = new Random();
-            _fleeTime = (float)rnd.Next(0, 3); // Radomize the time that entities runs away
+            _fleeTime = (float)rnd.Next(0, 2); // Radomize the time that entities runs away
 
             //Behaviour:
             _fleeing = false;

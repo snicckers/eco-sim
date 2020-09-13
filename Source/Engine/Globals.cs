@@ -149,10 +149,10 @@ namespace EcoSim
             Vector2 center = new Vector2(_texture.Bounds.Width / 2, _texture.Bounds.Height / 2);
             Globals._spriteBatch.Draw(_texture, rec, null, color, 0.0f, center, new SpriteEffects(), 0);
 
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._RedEngineering, _texture, 10);
-            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._RedEngineering, _texture, 10);
-            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._RedEngineering, _texture, 10);
-            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._RedEngineering, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, TopRight, Globals._colorDA_C, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._colorDA_C, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._colorDA_C, _texture, 10);
+            Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._colorDA_C, _texture, 10);
         }
     }
 }
