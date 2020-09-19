@@ -49,10 +49,12 @@
     <Compile Include="Source\Engine\Globals.cs" />
     <Compile Include="Source\Engine\Replace\MouseRef.cs" />
     <Compile Include="Source\Engine\NicksMouse.cs" />
+    <Compile Include="Source\Engine\NicksTimer.cs" />
     <Compile Include="Source\Simulation\Entity.cs" />
     <Compile Include="Source\Simulation\EntityFactory.cs" />
     <Compile Include="Source\Simulation\EntityMediator.cs" />
     <Compile Include="Source\Simulation\Level.cs" />
+    <Compile Include="Source\Simulation\Spore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

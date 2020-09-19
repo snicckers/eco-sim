@@ -21,12 +21,6 @@ namespace EcoSim.Source.Simulation
 
             _mediator = new EntityMediator();
             _factory = new EntityFactory();
-
-
-
-            // Testing:
-            //_mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, new Vector2(-200.0f, -200.0f)));
-            //_mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, new Vector2(-200.0f, -250.0f)));
         }
 
         /*------------------- UPDATE -----------------------------------------------*/

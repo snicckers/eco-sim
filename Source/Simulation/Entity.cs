@@ -19,20 +19,20 @@ using EcoSim.Source.Engine;
 
 namespace EcoSim.Source.Simulation
 {
-    class Entity
+    public class Entity
     {
         /*------------------- Fields -----------------------------------------------*/
-        private Vector2 _position, _dimensions, _direction;
-        private Color _color;
-        private Texture2D _texture;
+        protected Vector2 _position, _dimensions, _direction;
+        protected Color _color;
+        protected Texture2D _texture;
         private bool _drawingLine;
         private float _sightRange;
         private bool _delete;
 
         // Behaviour:
         private bool _fleeing;
-        private float _velocity;
-        private Entity _nearestTarget;
+        protected float _velocity;
+        protected Entity _nearestTarget;
 
         // Timers:
         private float _scanTimer;
@@ -54,7 +54,7 @@ namespace EcoSim.Source.Simulation
             _color = Globals._blueSapphire;
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
-            _sightRange = 30.0f;
+            _sightRange = 40.0f;
             _velocity = 4.0f;
 
             Random rnd = new Random();
@@ -68,11 +68,13 @@ namespace EcoSim.Source.Simulation
         public virtual void Update(List<Entity> EntityList, GameTime gameTime)
         {
             Behaviour(EntityList, gameTime);
+            CollisionAndBounds();
+            Move();
             CheckForRemoval();
         }
 
         /*------------------- Draw -------------------------------------------------*/
-        public void Draw()
+        public virtual void Draw()
         {
             Rectangle rec = new Rectangle((int)Position.X, (int)Position.Y, (int)_dimensions.X, (int)_dimensions.Y);
             Vector2 center = new Vector2(_texture.Bounds.Width / 2, _texture.Bounds.Height / 2);
@@ -81,7 +83,7 @@ namespace EcoSim.Source.Simulation
         }
 
         // Draw the object, and a line to the nearest target
-        public void Draw(List<Entity> EntityList)
+        public virtual void Draw(List<Entity> EntityList)
         {
             // Draw Line to nearest entity if it is not null:
             if (_nearestTarget != null)
@@ -120,7 +122,7 @@ namespace EcoSim.Source.Simulation
         /*------------------- Methods ----------------------------------------------*/
 
         // Run away from the nearest target
-        private void Behaviour(List<Entity> EntityList, GameTime gameTime)
+        protected virtual void Behaviour(List<Entity> EntityList, GameTime gameTime)
         {
             // Scan for enemies:
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // Time control.
@@ -155,13 +157,10 @@ namespace EcoSim.Source.Simulation
             {
                 _direction = new Vector2(0, 0); // Strange errors can pop up if you don't do this
             }
-
-            CollisionAndBounds();
-            Move();
         }
 
         // Reverse entity direction if it's tyring to move outside of map bounds
-        private void CollisionAndBounds()
+        protected virtual void CollisionAndBounds()
         {
             int bounds = 20;
 
@@ -193,7 +192,7 @@ namespace EcoSim.Source.Simulation
         }
 
         // Move 
-        private void Move() // Pass in a Vector 3 instead?
+        protected virtual void Move() // Pass in a Vector 3 instead?
         {
             if (_nearestTarget != null) // Remove this and put it in its own "" method
             {
@@ -204,7 +203,7 @@ namespace EcoSim.Source.Simulation
         }
 
         // Mark the object for deletion if it is outside the bounds of the map:
-        private void CheckForRemoval()
+        protected void CheckForRemoval()
         {
             if (_position.X < 0 || _position.X > Globals.MapWidth ||
                 _position.Y < 0 || _position.Y > Globals.MapHeight)
