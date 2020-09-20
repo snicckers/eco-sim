@@ -29,8 +29,6 @@ namespace EcoSim
          */
 
         /*------------------- Fields -----------------------------------------------*/
-        private Vector2 _acceleration;
-        private float _maxVel;
         private NicksTimer _directionTimer;
 
         /*------------------- Accessors --------------------------------------------*/
@@ -38,21 +36,23 @@ namespace EcoSim
         /*------------------- Constructors -----------------------------------------*/
         public Spore (Vector2 Pos, string Path) : base(Pos, Path)
         {
-            _acceleration = new Vector2(0, 0);
-            _velocity = new Vector2(0, 0);
-            _maxVel = 5.0f;
-            _directionTimer = new NicksTimer(3.0f);
+            base._acceleration = new Vector2(0, 0);
+            base._velocity = new Vector2(0, 0);
+            base._maxVel = 3.0f;
+            _directionTimer = new NicksTimer(1.0f);
+            base._color = Globals._colorSR_C;
+
+            base._accRate = 0.1f;
+
         }
 
         /*------------------- Update -----------------------------------------------*/
         public override void Update(List<Entity> EntityList, GameTime gameTime)
         {
-            this.Behaviour(gameTime);
-            this.Acceleration();
+            this.Behaviour(EntityList, gameTime);
             this.Move();
-            this._directionTimer.Update(gameTime);
-
-            base.CollisionAndBounds();
+            
+            this.CollisionAndBounds();
             base.CheckForRemoval();
         }
 
@@ -63,11 +63,11 @@ namespace EcoSim
         }
 
         /*------------------- Methods ----------------------------------------------*/
-        private void Behaviour(GameTime gameTime)
+        protected override void Behaviour(List<Entity> EntityList, GameTime gameTime)
         {
             if (_directionTimer.Finished)
             {
-                _color = Color.Red;
+                base._color = Color.Red;
 
                 Random rnd = new Random();
                 float xDir = (float)rnd.Next(-1000, 1000);
@@ -78,47 +78,26 @@ namespace EcoSim
 
                 base._direction = new Vector2(xDir, yDir);
 
-                _directionTimer.Reset();
+                this._directionTimer.Reset();
             }
             else
             {
-                _color = Color.Blue;
+                base._color = Globals._colorSR_C;
+                this._directionTimer.Update(gameTime);
             }
 
         }
 
-        private void Acceleration()
+        protected override void CollisionAndBounds()
         {
 
-            if (base._direction != null)
-            {
-                float flatAccel = 0.1f;
-                _acceleration = base._direction * flatAccel;
-
-                base._velocity += _acceleration;
-
-                // Clamp the speed:
-                float flatSpeed = 3.0f;
-                if (base._velocity.X >= flatSpeed)
-                    base._velocity.X = flatSpeed;
-
-                if (base._velocity.X <= -flatSpeed)
-                    base._velocity.X = -flatSpeed;
-
-                if (base._velocity.Y >= flatSpeed)
-                    base._velocity.Y = flatSpeed;
-
-                if (base._velocity.Y <= -flatSpeed)
-                    base._velocity.Y = -flatSpeed;
-            }
+            base.CollisionAndBounds();
         }
 
         protected override void Move()
         {
-            if (base._direction != null)
-            {
-                base._position += base._velocity;
-            }
+
+            base.Move();
         }
 
     }

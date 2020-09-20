@@ -87,6 +87,11 @@ namespace EcoSim.Source.Simulation
             if (keyState.IsKeyDown(Keys.S))
                 movement.Y++;
 
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                Globals._camera.Pos = new Vector2(0, 0);
+            }
+
             Globals._camera.Pos += movement * 20;
         }
     }

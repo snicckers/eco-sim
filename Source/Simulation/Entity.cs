@@ -22,11 +22,11 @@ namespace EcoSim.Source.Simulation
     public class Entity
     {
         /*------------------- Fields -----------------------------------------------*/
-        protected Vector2 _position, _dimensions, _direction;
+        protected Vector2 _position, _dimensions, _direction, _acceleration;
         protected Color _color;
         protected Texture2D _texture;
         private bool _drawingLine;
-        private float _sightRange;
+        protected float _sightRange, _maxVel, _accRate;
         private bool _delete;
 
         // Behaviour:
@@ -55,10 +55,12 @@ namespace EcoSim.Source.Simulation
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
             _sightRange = 40.0f;
-            _velocity = new Vector2(4.0f, 4.0f);
+            _velocity = new Vector2(0.0f, 0.0f);
+            _maxVel = 5.0f;
+            _accRate = 0.2f;
 
             Random rnd = new Random();
-            _fleeTime = (float)rnd.Next(0, 2); // Radomize the time that entities runs away
+            _fleeTime = (float)rnd.Next(1, 2); // Radomize the time that entities runs away
 
             //Behaviour:
             _fleeing = false;
@@ -69,7 +71,8 @@ namespace EcoSim.Source.Simulation
         {
             Behaviour(EntityList, gameTime);
             CollisionAndBounds();
-            Move();
+            //Acceleration();
+            //Move();
             CheckForRemoval();
         }
 
@@ -134,7 +137,7 @@ namespace EcoSim.Source.Simulation
                 _scanTimer = 0.0f;
             }
 
-            // Sets fleeing timer
+            // Sets fleeing timer & direction
             if (_nearestTarget != null)
             {
                 _fleeing = true;
@@ -146,17 +149,28 @@ namespace EcoSim.Source.Simulation
                 float deltaFleeTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _fleeTimer += deltaFleeTime;
 
+                if (_nearestTarget != null)
+                {
+                    _direction = -1.0f * Globals.GetUnitVector(_position, _nearestTarget.Position);
+                }
+                
+
                 if (_fleeTimer >= _fleeTime)
                 {
                     _direction = new Vector2(0, 0);
                     _fleeTimer = 0.0f;
                     _fleeing = false;
                 }
+
+                Move();
             } 
             else if ((!_fleeing) && (_direction != new Vector2(0, 0))) 
             {
                 _direction = new Vector2(0, 0); // Strange errors can pop up if you don't do this
+                _acceleration = new Vector2(0, 0);
+                _velocity = new Vector2(0, 0); 
             }
+
         }
 
         // Reverse entity direction if it's tyring to move outside of map bounds
@@ -165,42 +179,60 @@ namespace EcoSim.Source.Simulation
             int bounds = 20;
 
             // Horizontal wall collision:
-            if ((_position.X + 0) <= bounds) 
+            if ((this._position.X + 0) <= bounds)
             {
-                _direction.X *= -1.0f;
-                _position.X += 5;
+                this._direction.X *= -1.0f;
+                this._acceleration.X *= -1.0f;
+                this._velocity.X *= -1.0f;
+                this._position.X += 5;
             }
 
             if ((Globals.MapWidth - _position.X) <= bounds)
             {
-                _direction.X *= -1.0f;
-                _position.X -= 5;
+                this._direction.X *= -1.0f;
+                this._acceleration.X *= -1.0f;
+                this._velocity.X *= -1.0f;
+                this._position.X -= 5;
             }
 
             // Vertical Wall Collision:
-            if (_position.Y <= bounds)
+            if (this._position.Y <= bounds)
             {
-                _direction.Y *= -1.0f;
-                _position.Y += 5;
+                this._direction.Y *= -1.0f;
+                this._acceleration.Y *= -1.0f;
+                this._velocity.Y *= -1.0f;
+                this._position.Y += 5;
             }
 
             if ((Globals.MapHeight - _position.Y) <= bounds)
             {
-                _direction.Y *= -1.0f;
-                _position.Y -= 5;
+                this._direction.Y *= -1.0f;
+                this._acceleration.Y *= -1.0f;
+                this._velocity.Y *= -1.0f;
+                this._position.Y -= 5;
             }
         }
 
-        // Move 
-        protected virtual void Move() // Pass in a Vector 3 instead?
+        // Acceleration
+        protected virtual void Move()
         {
-            if (_nearestTarget != null) // Remove this and put it in its own "" method
-            {
-                _direction = Globals.GetUnitVector(_position, _nearestTarget.Position);
-            }
+            _acceleration = _direction * _accRate;
+            _velocity += _acceleration;
+            _position += _velocity;
 
-            _position -= _direction * _velocity; // Run away
+            if (_velocity.X >= _maxVel)
+                _velocity.X = _maxVel;
+
+            if (_velocity.X <= -_maxVel)
+                _velocity.X = -_maxVel;
+
+            if (_velocity.Y >= _maxVel)
+                _velocity.Y = _maxVel;
+
+            if (_velocity.Y <= -_maxVel)
+                _velocity.Y = -_maxVel;
         }
+
 
         // Mark the object for deletion if it is outside the bounds of the map:
         protected void CheckForRemoval()
