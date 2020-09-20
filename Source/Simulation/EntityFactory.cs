@@ -22,6 +22,7 @@ namespace EcoSim.Source.Simulation
         e_predator,
         e_prey,
         e_flora,
+        e_spore,
         e_baseEntity
     }
 
@@ -31,6 +32,9 @@ namespace EcoSim.Source.Simulation
         {
             switch (Type)
             {
+                case EntityTypes.e_spore:
+                    return new Spore(Position, "Primitives\\Square") as Entity;
+
                 // Create Flora Entity;
                 case EntityTypes.e_flora:
                     return null;

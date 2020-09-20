@@ -31,7 +31,7 @@ namespace EcoSim.Source.Simulation
 
         // Behaviour:
         private bool _fleeing;
-        protected float _velocity;
+        protected Vector2 _velocity;
         protected Entity _nearestTarget;
 
         // Timers:
@@ -55,7 +55,7 @@ namespace EcoSim.Source.Simulation
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
             _sightRange = 40.0f;
-            _velocity = 4.0f;
+            _velocity = new Vector2(4.0f, 4.0f);
 
             Random rnd = new Random();
             _fleeTime = (float)rnd.Next(0, 2); // Radomize the time that entities runs away

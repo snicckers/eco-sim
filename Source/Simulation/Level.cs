@@ -60,6 +60,12 @@ namespace EcoSim.Source.Simulation
                 _mediator.AddEntity(_factory.Factory(EntityTypes.e_baseEntity, InitialPosition));
             }
 
+            if ((Globals.Mouse.LeftClickDown()) && (Keyboard.GetState().IsKeyDown(Keys.G)))
+            {
+                Vector2 InitialPosition = new Vector2(Globals.Mouse.WorldLocation.X, Globals.Mouse.WorldLocation.Y);
+                _mediator.AddEntity(_factory.Factory(EntityTypes.e_spore, InitialPosition));
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.X))
                 _mediator.RemoveAll();
 

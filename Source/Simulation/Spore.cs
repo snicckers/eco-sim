@@ -29,7 +29,7 @@ namespace EcoSim
          */
 
         /*------------------- Fields -----------------------------------------------*/
-        private float _acceleration;
+        private Vector2 _acceleration;
         private float _maxVel;
         private NicksTimer _directionTimer;
 
@@ -38,48 +38,78 @@ namespace EcoSim
         /*------------------- Constructors -----------------------------------------*/
         public Spore (Vector2 Pos, string Path) : base(Pos, Path)
         {
-            _acceleration = 0.0f;
-            _velocity = 0.0f;
+            _acceleration = new Vector2(0, 0);
+            _velocity = new Vector2(0, 0);
             _maxVel = 5.0f;
+            _directionTimer = new NicksTimer(3.0f);
         }
 
         /*------------------- Update -----------------------------------------------*/
         public override void Update(List<Entity> EntityList, GameTime gameTime)
         {
-            Behaviour(gameTime);
-            Acceleration();
+            this.Behaviour(gameTime);
+            this.Acceleration();
+            this.Move();
+            this._directionTimer.Update(gameTime);
 
-            base.Move();
             base.CollisionAndBounds();
             base.CheckForRemoval();
         }
 
         /*------------------- Draw -------------------------------------------------*/
-        public override void Draw(List<Entity> EntityList)
+        public override void Draw()
         {
-            base.Draw(EntityList);
+            base.Draw();
         }
 
         /*------------------- Methods ----------------------------------------------*/
         private void Behaviour(GameTime gameTime)
         {
+            if (_directionTimer.Finished)
+            {
+                _color = Color.Red;
 
+                Random rnd = new Random();
+                float xDir = (float)rnd.Next(-1000, 1000);
+                float yDir = (float)rnd.Next(-1000, 1000);
 
-            // Change the direction randomely:
-            Random rnd = new Random();
-            float xDir = (float)rnd.Next(0, 1);
-            float yDir = (float)rnd.Next(0, 1);
+                xDir /= 2000.0f;
+                yDir /= 2000.0f;
 
-            base._direction = new Vector2(xDir, yDir);
+                base._direction = new Vector2(xDir, yDir);
+
+                _directionTimer.Reset();
+            }
+            else
+            {
+                _color = Color.Blue;
+            }
 
         }
 
         private void Acceleration()
         {
-            if (base._velocity <= _maxVel)
+
+            if (base._direction != null)
             {
-                
-                
+                float flatAccel = 0.1f;
+                _acceleration = base._direction * flatAccel;
+
+                base._velocity += _acceleration;
+
+                // Clamp the speed:
+                float flatSpeed = 3.0f;
+                if (base._velocity.X >= flatSpeed)
+                    base._velocity.X = flatSpeed;
+
+                if (base._velocity.X <= -flatSpeed)
+                    base._velocity.X = -flatSpeed;
+
+                if (base._velocity.Y >= flatSpeed)
+                    base._velocity.Y = flatSpeed;
+
+                if (base._velocity.Y <= -flatSpeed)
+                    base._velocity.Y = -flatSpeed;
             }
         }
 
@@ -87,7 +117,7 @@ namespace EcoSim
         {
             if (base._direction != null)
             {
-                base._position += (base._direction * base._velocity);
+                base._position += base._velocity;
             }
         }
 

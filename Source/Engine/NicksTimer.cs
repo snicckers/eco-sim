@@ -32,6 +32,7 @@ namespace EcoSim.Source.Engine
         /*------------------- Constructors -----------------------------------------*/
         public NicksTimer(float Duration)
         {
+            _elapsedTime = 0.0f;
             _timerDuration = Duration;
         }
 
@@ -45,6 +46,12 @@ namespace EcoSim.Source.Engine
             {
                 _finished = true;
             }
+        }
+
+        public void Reset()
+        {
+            _finished = false;
+            _elapsedTime = 0.0f;
         }
     }
 }
