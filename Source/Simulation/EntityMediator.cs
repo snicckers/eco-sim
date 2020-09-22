@@ -33,17 +33,29 @@ namespace EcoSim.Source.Simulation
 
 
         /*------------------- Update -----------------------------------------------*/
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, EntityFactory factory)
         {
             List<Entity> ToBeRemoved = new List<Entity>();
+            List<Entity> ToBeAdded = new List<Entity>();
 
             foreach (Entity e in _entities)
             {
                 e.Update(_entities, gameTime);
 
+                if (e.Spawn)
+                {
+                    Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
+                    ToBeAdded.Add(factory.Factory(EntityTypes.e_baseEntity, InitialPosition));
+                }
+
                 if (e.Delete)
                     ToBeRemoved.Add(e);
                     //RemoveEntity(e, ToBeRemoved);
+            }
+
+            foreach (Entity e in ToBeAdded)
+            {
+                _entities.Add(e);
             }
 
             foreach (Entity e in ToBeRemoved)

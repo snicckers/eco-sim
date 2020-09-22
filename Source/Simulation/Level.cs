@@ -32,11 +32,10 @@ namespace EcoSim.Source.Simulation
             Controls(keyState);
 
             // Game Updates Go Here:
-            _mediator.Update(gameTime);
+            _mediator.Update(gameTime, _factory);
 
             // End Input During Update:
             Globals.Mouse.Update();
-
 
         }
 

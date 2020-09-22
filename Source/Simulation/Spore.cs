@@ -51,14 +51,23 @@ namespace EcoSim
         {
             this.Behaviour(EntityList, gameTime);
             this.Move();
-            
             this.CollisionAndBounds();
+
             base.CheckForRemoval();
         }
 
         /*------------------- Draw -------------------------------------------------*/
         public override void Draw()
         {
+            if (_directionTimer.Finished)
+            {
+                base._color = Color.Red;
+            }
+            else
+            {
+                base._color = Color.Blue;
+            }
+
             base.Draw();
         }
 

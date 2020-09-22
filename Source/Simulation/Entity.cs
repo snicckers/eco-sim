@@ -33,18 +33,21 @@ namespace EcoSim.Source.Simulation
         private bool _fleeing;
         protected Vector2 _velocity;
         protected Entity _nearestTarget;
+        private bool _spawn;
 
         // Timers:
         private float _scanTimer;
         private static float _scanTime = 0.1f;
         private float _fleeTimer;
         private float _fleeTime;
+        private bool _slowDown;
 
         /*------------------- Accessors --------------------------------------------*/
         public Vector2 Position { get => _position; set => _position = value; }
         public float SightRange { get => _sightRange; }
         public bool DrawingLine { get => _drawingLine; }
         public bool Delete { get => _delete; }
+        public bool Spawn { get => _spawn; set => _spawn = value; }
 
         /*------------------- Constructors -----------------------------------------*/
         public Entity(Vector2 Position, string Path)
@@ -54,13 +57,13 @@ namespace EcoSim.Source.Simulation
             _color = Globals._blueSapphire;
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
-            _sightRange = 40.0f;
+            _sightRange = 30.0f;
             _velocity = new Vector2(0.0f, 0.0f);
-            _maxVel = 5.0f;
-            _accRate = 0.2f;
+            _maxVel = 2.0f;
+            _accRate = 0.05f;
 
             Random rnd = new Random();
-            _fleeTime = (float)rnd.Next(1, 2); // Radomize the time that entities runs away
+            _fleeTime = (float)rnd.Next(1, 3); // Radomize the time that entities runs away
 
             //Behaviour:
             _fleeing = false;
@@ -70,10 +73,28 @@ namespace EcoSim.Source.Simulation
         public virtual void Update(List<Entity> EntityList, GameTime gameTime)
         {
             Behaviour(EntityList, gameTime);
+            Move();
             CollisionAndBounds();
-            //Acceleration();
-            //Move();
             CheckForRemoval();
+
+
+            Random r = new Random();
+            int Grow = r.Next(1, 100);
+
+            if (Grow >= 90)
+            {
+                _dimensions.X += 1;
+                _dimensions.Y += 1;
+                _sightRange += 0.5f;
+            }
+
+            if (_dimensions.X >= 40)
+            {
+
+                _spawn = true;
+                _delete = true;
+            }
+            
         }
 
         /*------------------- Draw -------------------------------------------------*/
@@ -153,22 +174,36 @@ namespace EcoSim.Source.Simulation
                 {
                     _direction = -1.0f * Globals.GetUnitVector(_position, _nearestTarget.Position);
                 }
-                
 
                 if (_fleeTimer >= _fleeTime)
                 {
-                    _direction = new Vector2(0, 0);
+                    _slowDown = true;
+                    //_direction *= 1.0f;
                     _fleeTimer = 0.0f;
                     _fleeing = false;
                 }
+            }
 
-                Move();
-            } 
-            else if ((!_fleeing) && (_direction != new Vector2(0, 0))) 
+            if (_slowDown)
             {
-                _direction = new Vector2(0, 0); // Strange errors can pop up if you don't do this
-                _acceleration = new Vector2(0, 0);
-                _velocity = new Vector2(0, 0); 
+                _acceleration = new Vector2(0.0f, 0.0f);
+                _velocity.X /= 1.13f;
+                _velocity.Y /= 1.13f;
+
+                if (Math.Abs(_velocity.X) <= 0.5f && Math.Abs(_velocity.Y) <= 0.5f)
+                {
+                    _direction = new Vector2(0, 0);
+                    _velocity = new Vector2(0, 0);
+                    _slowDown = false;
+                }
+
+            }
+
+            else if (!_fleeing && !_slowDown && _direction != new Vector2(0, 0))
+            {
+                _direction = new Vector2(0, 0);
+                //_acceleration = new Vector2(0, 0);
+                _velocity = new Vector2(0, 0);              
             }
 
         }
