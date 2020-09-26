@@ -54,6 +54,7 @@
     <Compile Include="Source\Simulation\EntityFactory.cs" />
     <Compile Include="Source\Simulation\EntityMediator.cs" />
     <Compile Include="Source\Simulation\Level.cs" />
+    <Compile Include="Source\Simulation\Plant.cs" />
     <Compile Include="Source\Simulation\Spore.cs" />
   </ItemGroup>
   <ItemGroup>

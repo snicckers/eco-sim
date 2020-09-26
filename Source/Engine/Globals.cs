@@ -21,7 +21,6 @@ namespace EcoSim
 {
     class Globals
     {
-
         /*------------------- FIELDS -----------------------------------------------*/
         // Game World:
         private static int _screenHeight, _screenWidth;
