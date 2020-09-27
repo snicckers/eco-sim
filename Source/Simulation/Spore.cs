@@ -40,7 +40,7 @@ namespace EcoSim
             base._velocity = new Vector2(0, 0);
             base._maxVel = 3.0f;
             _directionTimer = new NicksTimer(1.0f);
-            base._color = Globals._colorSR_C;
+            base._color = Color.Red;
 
             base._accRate = 0.1f;
 
@@ -61,11 +61,11 @@ namespace EcoSim
         {
             if (_directionTimer.Finished)
             {
-                base._color = Color.Red;
+                //base._color = Color.Red;
             }
             else
             {
-                base._color = Color.Blue;
+                //base._color = Color.Blue;
             }
 
             base.Draw();

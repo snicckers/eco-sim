@@ -30,6 +30,7 @@ namespace EcoSim
         public static Camera2D _camera;
         private static NicksMouse _mouse;
         public static float _initialZoom = 0.6f;
+        private static UserInput _input;
 
         // Level:
         private static int _mapHeight = 2500;
@@ -76,6 +77,7 @@ namespace EcoSim
         public static int MapHeight { get => _mapHeight; set => _mapHeight = value; }
         public static int MapWidth { get => _mapWidth; set => _mapWidth = value; }
         internal static NicksMouse Mouse { get => _mouse; set => _mouse = value; }
+        internal static UserInput Input { get => _input; set => _input = value; }
 
 
         /*------------------- METHODS ----------------------------------------------*/

@@ -76,25 +76,6 @@ namespace EcoSim.Source.Simulation
             Move();
             CollisionAndBounds();
             CheckForRemoval();
-
-
-            Random r = new Random();
-            int Grow = r.Next(1, 100);
-
-            if (Grow >= 90)
-            {
-                _dimensions.X += 1;
-                _dimensions.Y += 1;
-                _sightRange += 0.5f;
-            }
-
-            if (_dimensions.X >= 40)
-            {
-
-                _spawn = true;
-                _delete = true;
-            }
-            
         }
 
         /*------------------- Draw -------------------------------------------------*/
@@ -102,7 +83,6 @@ namespace EcoSim.Source.Simulation
         {
             Rectangle rec = new Rectangle((int)Position.X, (int)Position.Y, (int)_dimensions.X, (int)_dimensions.Y);
             Vector2 center = new Vector2(_texture.Bounds.Width / 2, _texture.Bounds.Height / 2);
-
             Globals._spriteBatch.Draw(_texture, rec, null, _color, 0.0f, center, new SpriteEffects(), 0);
         }
 

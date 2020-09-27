@@ -23,12 +23,14 @@ namespace EcoSim.Source.Simulation
         /*------------------- FIELDS -----------------------------------------------*/
         // Consider using a dictionary?
         private List<Entity> _entities = new List<Entity>();
-        private EntityFactory _factory;
+        private EntityFactory _factory = new EntityFactory();
+
+        internal EntityFactory Factory { get => _factory; set => _factory = value; }
 
         /*------------------- Constructors -----------------------------------------*/
         public EntityMediator()
         {
-            _factory = new EntityFactory();
+            
             // Ehh leave this blank for now.
         }
 
@@ -45,7 +47,7 @@ namespace EcoSim.Source.Simulation
                 if (e.Spawn)
                 {
                     Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
-                    ToBeAdded.Add(_factory.Factory(EntityTypes.e_baseEntity, InitialPosition));
+                    ToBeAdded.Add(this.Factory.Build(EntityTypes.e_baseEntity, InitialPosition));
                 }
 
                 if (e.Delete)
@@ -80,9 +82,9 @@ namespace EcoSim.Source.Simulation
             _entities.Add(ENTITY);
         }
 
-        public void AddEntity(Vector2 Pos, EntityTypes Type)
+        public void AddEntity(EntityTypes Type, Vector2 Pos)
         {
-            _entities.Add(_factory.Factory(Type, Pos));
+            _entities.Add(this.Factory.Build(Type, Pos));
         }
 
         public void RemoveEntity(Entity Entity, List<Entity> ToBeRemoved)

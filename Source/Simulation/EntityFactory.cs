@@ -28,7 +28,7 @@ namespace EcoSim.Source.Simulation
 
     class EntityFactory
     {
-        public Entity Factory(EntityTypes Type, Vector2 Position)
+        public Entity Build(EntityTypes Type, Vector2 Position)
         {
             switch (Type)
             {
