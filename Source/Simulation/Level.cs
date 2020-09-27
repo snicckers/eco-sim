@@ -26,6 +26,7 @@ namespace EcoSim.Source.Simulation
             // User Input:
             KeyboardState keyState = Keyboard.GetState();
             Globals.Input.Update(keyState, _mediator);
+  
 
             // Game Updates Go Here:
             _mediator.Update(gameTime);

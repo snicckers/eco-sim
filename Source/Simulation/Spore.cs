@@ -30,16 +30,20 @@ namespace EcoSim
 
         /*------------------- Fields -----------------------------------------------*/
         private NicksTimer _directionTimer;
+        private NicksTimer _spawnTimer;
 
         /*------------------- Accessors --------------------------------------------*/
 
         /*------------------- Constructors -----------------------------------------*/
-        public Spore (Vector2 Pos, string Path) : base(Pos, Path)
+        public Spore (Vector2 Pos, string Path, EntityTypes Type) : base(Pos, Path, Type)
         {
             base._acceleration = new Vector2(0, 0);
             base._velocity = new Vector2(0, 0);
             base._maxVel = 3.0f;
-            _directionTimer = new NicksTimer(1.0f);
+            _directionTimer = new NicksTimer((float)Globals.GenerateRandomNumber(1, 3));
+            _spawnTimer = new NicksTimer((float)Globals.GenerateRandomNumber(3, 9));
+
+
             base._color = Color.Red;
 
             base._accRate = 0.1f;
@@ -52,6 +56,7 @@ namespace EcoSim
             this.Behaviour(EntityList, gameTime);
             this.Move();
             this.CollisionAndBounds();
+            this.Reproduction(gameTime);
 
             base.CheckForRemoval();
         }
@@ -61,11 +66,11 @@ namespace EcoSim
         {
             if (_directionTimer.Finished)
             {
-                //base._color = Color.Red;
+                base._color = Color.Red;
             }
             else
             {
-                //base._color = Color.Blue;
+                base._color = Color.Blue;
             }
 
             base.Draw();
@@ -78,9 +83,9 @@ namespace EcoSim
             {
                 base._color = Color.Red;
 
-                Random rnd = new Random();
-                float xDir = (float)rnd.Next(-1000, 1000);
-                float yDir = (float)rnd.Next(-1000, 1000);
+                
+                float xDir = (float)Globals.GenerateRandomNumber(-1000, 1000);
+                float yDir = (float)Globals.GenerateRandomNumber(-1000, 1000);
 
                 xDir /= 2000.0f;
                 yDir /= 2000.0f;
@@ -94,8 +99,24 @@ namespace EcoSim
                 base._color = Globals._colorSR_C;
                 this._directionTimer.Update(gameTime);
             }
-
         }
+
+        protected override void Reproduction(GameTime gameTime)
+        {
+            if (_spawnTimer.Finished)
+            {
+                base._spawn = true;
+                base._delete = true;
+                
+            }
+            else
+            {
+                this._spawnTimer.Update(gameTime);
+            }
+
+            base.Reproduction(gameTime);
+        }
+
 
         protected override void CollisionAndBounds()
         {

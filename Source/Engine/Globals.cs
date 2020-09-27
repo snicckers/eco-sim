@@ -31,6 +31,8 @@ namespace EcoSim
         private static NicksMouse _mouse;
         public static float _initialZoom = 0.6f;
         private static UserInput _input;
+        private static Random _randomNumber = new Random();
+        private static readonly object _syncLock = new object();
 
         // Level:
         private static int _mapHeight = 2500;
@@ -78,6 +80,8 @@ namespace EcoSim
         public static int MapWidth { get => _mapWidth; set => _mapWidth = value; }
         internal static NicksMouse Mouse { get => _mouse; set => _mouse = value; }
         internal static UserInput Input { get => _input; set => _input = value; }
+        public static Random RandomNumber { get => _randomNumber; }
+        public static object SyncLock => _syncLock;
 
 
         /*------------------- METHODS ----------------------------------------------*/
@@ -154,6 +158,14 @@ namespace EcoSim
             Globals.DrawLine(Globals._spriteBatch, TopLeft, BottomLeft, Globals._colorDA_C, _texture, 10);
             Globals.DrawLine(Globals._spriteBatch, TopRight, BottomRight, Globals._colorDA_C, _texture, 10);
             Globals.DrawLine(Globals._spriteBatch, BottomLeft, BottomRight, Globals._colorDA_C, _texture, 10);
+        }
+
+        public static int GenerateRandomNumber(int min, int max)
+        {
+            lock (SyncLock)
+            {
+                return RandomNumber.Next(min, max);
+            }
         }
     }
 }

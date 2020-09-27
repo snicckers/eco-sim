@@ -31,7 +31,6 @@ namespace EcoSim.Source.Simulation
         public EntityMediator()
         {
             
-            // Ehh leave this blank for now.
         }
 
         /*------------------- Update -----------------------------------------------*/
@@ -46,13 +45,29 @@ namespace EcoSim.Source.Simulation
 
                 if (e.Spawn)
                 {
-                    Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
-                    ToBeAdded.Add(this.Factory.Build(EntityTypes.e_baseEntity, InitialPosition));
+
+                    if (e.Type == EntityTypes.e_baseEntity)
+                    {
+                        Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
+                        ToBeAdded.Add(this.Factory.Build(EntityTypes.e_baseEntity, InitialPosition));
+                    }
+
+                    if (e.Type == EntityTypes.e_spore)
+                    {
+                        Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
+                        ToBeAdded.Add(this.Factory.Build(EntityTypes.e_flora, InitialPosition));
+                    }
+
+                    if (e.Type == EntityTypes.e_flora)
+                    {
+                        Vector2 InitialPosition = new Vector2(e.Position.X, e.Position.Y);
+                        ToBeAdded.Add(this.Factory.Build(EntityTypes.e_spore, InitialPosition));
+                    }
+                    
                 }
 
                 if (e.Delete)
                     ToBeRemoved.Add(e);
-                    //RemoveEntity(e, ToBeRemoved);
             }
 
             foreach (Entity e in ToBeAdded)
@@ -64,7 +79,6 @@ namespace EcoSim.Source.Simulation
             {
                 _entities.Remove(e);
             }
-
         }
 
         /*------------------- Draw -------------------------------------------------*/
@@ -72,7 +86,22 @@ namespace EcoSim.Source.Simulation
         {
             foreach (Entity e in _entities)
             {
-                e.Draw(_entities);
+                if (e != null)
+                {
+                    if (e.Type == EntityTypes.e_baseEntity)
+                    {
+                        e.Draw(_entities);
+                    }
+                    if (e.Type == EntityTypes.e_spore)
+                    {
+                        e.Draw();
+                    }
+
+                    if (e.Type == EntityTypes.e_flora)
+                        e.Draw();
+
+
+                }
             }
         }
 

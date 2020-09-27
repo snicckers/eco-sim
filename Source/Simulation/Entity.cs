@@ -27,13 +27,14 @@ namespace EcoSim.Source.Simulation
         protected Texture2D _texture;
         private bool _drawingLine;
         protected float _sightRange, _maxVel, _accRate;
-        private bool _delete;
+        protected bool _delete;
+        private EntityTypes _type;
 
         // Behaviour:
-        private bool _fleeing;
+        protected bool _fleeing;
         protected Vector2 _velocity;
         protected Entity _nearestTarget;
-        private bool _spawn;
+        protected bool _spawn;
 
         // Timers:
         private float _scanTimer;
@@ -48,22 +49,25 @@ namespace EcoSim.Source.Simulation
         public bool DrawingLine { get => _drawingLine; }
         public bool Delete { get => _delete; }
         public bool Spawn { get => _spawn; set => _spawn = value; }
+        public EntityTypes Type { get => _type; set => _type = value; }
 
         /*------------------- Constructors -----------------------------------------*/
-        public Entity(Vector2 Position, string Path)
+        public Entity(Vector2 Position, string Path, EntityTypes Type)
         {
             this.Position = Position;
             _texture = Globals._content.Load<Texture2D>(Path);
             _color = Globals._blueSapphire;
             _dimensions = new Vector2(12, 12);
             _direction = new Vector2(0, 0);
-            _sightRange = 30.0f;
             _velocity = new Vector2(0.0f, 0.0f);
+            _sightRange = 30.0f;
             _maxVel = 2.0f;
             _accRate = 0.05f;
 
+            _type = Type;
+
             Random rnd = new Random();
-            _fleeTime = (float)rnd.Next(1, 3); // Radomize the time that entities runs away
+            _fleeTime = (float)Globals.GenerateRandomNumber(1, 5); // Radomize the time that entities runs away
 
             //Behaviour:
             _fleeing = false;
@@ -257,6 +261,11 @@ namespace EcoSim.Source.Simulation
             {
                 _delete = true;
             }    
+        }
+
+        protected virtual void Reproduction(GameTime gameTime)
+        {
+
         }
 
     }
